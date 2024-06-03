@@ -1,0 +1,26 @@
+[workspace]
+members = [
+    "czkawka_core",
+    "czkawka_cli",
+    "czkawka_gui",
+    "krokiet"
+]
+exclude = [
+    "ci_tester",
+]
+resolver = "2"
+
+[profile.release]
+# panic = "unwind" in opposite to "abort", allows to catch panic!()
+# Since Czkawka parse different types of files with few libraries, it is possible
+# that some files will cause crash, so at this moment I don't recommend to use "abort"
+# until you are ready to occasional crashes
+panic = "unwind"
+
+# LTO setting is disabled by default, because release mode is usually needed to develop app and compilation with LTO would take a lot of time
+# But it is used to optimize release builds(and probably also in CI, where time is not so important as in local development)
+#lto = "thin"
+
+# Optimize all dependencies except application/workspaces, even in debug builds
+[profile.dev.package."*"]
+opt-level = 3
